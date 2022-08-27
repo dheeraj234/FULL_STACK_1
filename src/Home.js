@@ -25,25 +25,26 @@ const Home = (props) => {
     passwordConfirmationError: ""
   });
  
-const [signUpDetails,setSignUpDetails]=useState();
   const navigate = useNavigate();
 
-  const signup=(e)=>{
-    e.preventDefault();
-    const signupData=JSON.stringify(formDetails);
-    localStorage.setItem("formData",signupData);    
-    console.log(formDetails);
-    axios.post("http://localhost:3001/app/signup",{formDetails})
+  const signup=()=>{
+    const signupData = {
+      fullName: formDetails.fname,
+      username: formDetails.uname,
+      email: formDetails.email,
+      password: formDetails.password
+    }
+    // const signupData=JSON.stringify(formDetails);
+    localStorage.setItem("formData",JSON.stringify(signupData));    
+    axios.post("http://localhost:3001/app/signup",{signupData})
     .then((data)=>{console.log(data);
-      setSignUpDetails(data);
+      props.setFormDetails(signupData);
       navigate(`/display`);
-      })
+    })
     .catch(err => {console.log(err);});
 
   }
 
-  useEffect(()=>{props.setFormDetails(signUpDetails);
-    },[signUpDetails])
 
   function handleblur(e){
     const {name, value}= e.target;
@@ -93,15 +94,11 @@ const [signUpDetails,setSignUpDetails]=useState();
     }
   }, []);
 
-  // const onSubmited=(e){
-
-  // }
-
   return (
     <div className='container'>
       <center>
       <h1 className='register'>Register</h1>
-      <form onSubmit={signup}>
+      <form>
           <div className='form-group'>
             <input 
                 type='text' 
@@ -180,7 +177,7 @@ const [signUpDetails,setSignUpDetails]=useState();
               )}
           </div>
           <div className='form-group'>
-            <button type='submit' className='signup'>Sign Up</button>
+            <button className='signup' onClick={signup}>Sign Up</button>
           </div>
       </form>
           <div className='form-group'>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { useNavigate} from "react-router-dom";
 
 // import Home from './Home'
@@ -11,7 +11,6 @@ const Signin = (props) => {
     email:'',
     password:''
   });
-  const[info,setInfo]=useState();
   function handleChange(e){
     const {name,value}=e.target;
     setCredentials((prevState) => { return {...prevState, [name]:value} });
@@ -20,33 +19,18 @@ const Signin = (props) => {
   // let data={}
     const onSubmitted=(e)=>{ 
       e.preventDefault();
-      
-      // props.setInfoDetails(info);
-        axios.post("http://localhost:3001/login",{credentials},{
+              axios.post("http://localhost:3001/login",{credentials},{
           headers:{
             'Content-type':'application/json'
           }
         })
         .then((res)=>{
-          let data=res.data;
-          
-           setInfo(data);
-           console.log(data);
-           navigate(`/display `)
+           props.setFormDetails(res.data);
+           navigate(`/display `);
         })
-        .catch((err)=>console.log(err))
-        // props.setInfoDetails(info);
-        // console.log(data);
-        // setInfo(data);
-        // console.log(info);
-
+        .catch((err)=>console.log(err));
     }
 
-    useEffect(()=>{
-      console.log("this is sign data",info);
-    props.setFormDetails(info);
-
-    },[info])
   return (
     <div>
       <center>
