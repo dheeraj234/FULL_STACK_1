@@ -25,20 +25,25 @@ const Home = (props) => {
     passwordConfirmationError: ""
   });
  
-
+const [signUpDetails,setSignUpDetails]=useState();
   const navigate = useNavigate();
 
   const signup=(e)=>{
     e.preventDefault();
     const signupData=JSON.stringify(formDetails);
     localStorage.setItem("formData",signupData);    
-    props.setFormDetails(formDetails);
     console.log(formDetails);
     axios.post("http://localhost:3001/app/signup",{formDetails})
-    .then(()=>{navigate(`/display`)})
+    .then((data)=>{console.log(data);
+      setSignUpDetails(data);
+      navigate(`/display`);
+      })
     .catch(err => {console.log(err);});
-    
+
   }
+
+  useEffect(()=>{props.setFormDetails(signUpDetails);
+    },[signUpDetails])
 
   function handleblur(e){
     const {name, value}= e.target;
@@ -179,7 +184,7 @@ const Home = (props) => {
           </div>
       </form>
           <div className='form-group'>
-            <button type='submit' className='signin'><Link to="/sign" >Sign In</Link></button>
+            <button className='signin'><Link to="/sign" >Sign In</Link></button>
           </div>
       </center>
     </div>

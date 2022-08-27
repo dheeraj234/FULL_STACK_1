@@ -110,7 +110,7 @@ const hello=(e)=>{
     <div>
       <center>
         <div>hello</div>
-        <div>{props.details.fname}</div>
+        <div>{props.details.username}</div>
         <div>
         <form onSubmit={hello}>
         <input type="file" onChange={hi}/>
